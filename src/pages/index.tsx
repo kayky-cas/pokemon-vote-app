@@ -1,14 +1,8 @@
 import { Pokemon } from '@prisma/client';
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
-import { prisma } from '../db/client';
 
 import { PokemonView } from '../components/pokemon.components';
-import {
-  dataToPokemon,
-  fetchPokemon,
-  getPokemonCount,
-} from '../helpers/pokemon.helpers';
 
 const PokeVote: NextPage<any> = () => {
   const [pokemon, setPokemon] = useState<Pokemon[]>([]);
