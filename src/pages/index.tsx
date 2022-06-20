@@ -50,7 +50,7 @@ const PokeVote: NextPage<any> = () => {
       )}
       <div className="mt-10 text-center">
         <Link href="/votes">
-          <a className="text-fuchsia-400">Most voted table!</a>
+          <a className="text-fuchsia-400">Most voted table</a>
         </Link>
       </div>
     </div>

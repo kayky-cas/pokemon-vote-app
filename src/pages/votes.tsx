@@ -77,11 +77,13 @@ const MostVotedTable: React.FC<MostVotedTableProps> = ({ pokemon, title }) => {
 type VotesPageProps = {
   mostVotedpokemon: Pokemon[];
   leastVotedpokemon: Pokemon[];
+  voteCount: number;
 };
 
 const VotesPage: NextPage<VotesPageProps> = ({
   mostVotedpokemon,
   leastVotedpokemon,
+  voteCount,
 }) => {
   return (
     <div className="m-auto">
@@ -90,14 +92,19 @@ const VotesPage: NextPage<VotesPageProps> = ({
           No pokemon vote data!
         </h1>
       ) : (
-        <div className="flex flex-wrap justify-between space-x-20">
-          <MostVotedTable pokemon={mostVotedpokemon} title="Most voted!" />
-          <MostVotedTable pokemon={leastVotedpokemon} title="Least voted!" />
+        <div>
+          <h1 className="w-full text-3xl text-center mb-5 text-slate-100 italic	font-extrabold antialiased">
+            {voteCount} votes
+          </h1>
+          <div className="flex flex-wrap justify-between space-x-20">
+            <MostVotedTable pokemon={mostVotedpokemon} title="Most voted!" />
+            <MostVotedTable pokemon={leastVotedpokemon} title="Least voted!" />
+          </div>
         </div>
       )}
       <div className="mt-10 text-center">
         <Link href="/">
-          <a className="text-fuchsia-400">Back to vote!</a>
+          <a className="text-fuchsia-400">Back to vote</a>
         </Link>
       </div>
     </div>
@@ -118,6 +125,9 @@ export const getServerSideProps = async () => {
       (pokemon.votesUp / (pokemon.votesDown + pokemon.votesUp)) * 100
     );
   };
+
+  const voteCount =
+    pokemon.reduce((acc, a) => acc + a.votesDown + a.votesUp, 0) / 2;
 
   const top5 = pokemon
     .filter(p => getPercernt(p) > 0)
@@ -145,6 +155,7 @@ export const getServerSideProps = async () => {
     props: {
       mostVotedpokemon: top5,
       leastVotedpokemon: top5Worst,
+      voteCount,
     },
   };
 };
