@@ -107,6 +107,15 @@ const VotesPage: NextPage<VotesPageProps> = ({
           <a className="text-fuchsia-400">Back to vote</a>
         </Link>
       </div>
+      <div className="mt-3 text-center">
+        <a
+          target="blank"
+          href="http://github.com/kayky-cas/pokemon-vote-app"
+          className="text-sky-300"
+        >
+          Github
+        </a>
+      </div>
     </div>
   );
 };

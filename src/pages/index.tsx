@@ -53,6 +53,15 @@ const PokeVote: NextPage<any> = () => {
           <a className="text-fuchsia-400">Most voted table</a>
         </Link>
       </div>
+      <div className="mt-3 text-center">
+        <a
+          target="blank"
+          href="http://github.com/kayky-cas/pokemon-vote-app"
+          className="text-sky-300"
+        >
+          Github
+        </a>
+      </div>
     </div>
   );
 };
