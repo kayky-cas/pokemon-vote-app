@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 
 import { PokemonView } from '../components/pokemon.components';
 import { Spinner } from '../components/spinner.components';
-import { RequestPokemonBody } from './api/pokemon';
 
 // TODO: Add a most voted table page
 const PokeVote: NextPage<any> = () => {
