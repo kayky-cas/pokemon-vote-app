@@ -11,10 +11,6 @@ type PokemonTrProps = {
   position: number;
 };
 
-type MostVotedTableProps = {
-  pokemon: Pokemon[];
-};
-
 const PokemonTr: React.FC<PokemonTrProps> = ({ pokemon, position }) => {
   const percent = Math.round(
     (pokemon.votesUp / (pokemon.votesDown + pokemon.votesUp)) * 100
@@ -43,40 +39,61 @@ const PokemonTr: React.FC<PokemonTrProps> = ({ pokemon, position }) => {
       </td>
       <td>
         {percent > 50 ? (
-          <span className={`ml-10 text-cyan-300`}>{percent}%</span>
+          <span className={`ml-2 text-cyan-300`}>{percent}%</span>
         ) : (
-          <span className={`ml-10 text-red-300`}>{percent}%</span>
+          <span className={`ml-2 text-red-300`}>{percent}%</span>
         )}
       </td>
     </tr>
   );
 };
 
-const MostVotedTable: React.FC<MostVotedTableProps> = ({ pokemon }) => {
+type MostVotedTableProps = {
+  pokemon: Pokemon[];
+  title: string;
+};
+
+const MostVotedTable: React.FC<MostVotedTableProps> = ({ pokemon, title }) => {
   if (!pokemon) {
     return null;
   }
 
   return (
-    <table>
-      <tbody>
-        {pokemon.map((p, i) => (
-          <PokemonTr key={p.id} pokemon={p} position={i + 1} />
-        ))}
-      </tbody>
-    </table>
+    <div className="ml-auto">
+      <h1 className="w-full text-center mb-5 text-slate-100	font-extrabold antialiased">
+        {title}
+      </h1>
+      <table>
+        <tbody>
+          {pokemon.map((p, i) => (
+            <PokemonTr key={p.id} pokemon={p} position={i + 1} />
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
-const VotesPage: NextPage<{ pokemon: Pokemon[] }> = ({ pokemon }) => {
+type VotesPageProps = {
+  mostVotedpokemon: Pokemon[];
+  leastVotedpokemon: Pokemon[];
+};
+
+const VotesPage: NextPage<VotesPageProps> = ({
+  mostVotedpokemon,
+  leastVotedpokemon,
+}) => {
   return (
     <div className="m-auto">
-      {pokemon.length === 0 ? (
+      {mostVotedpokemon.length === 0 || leastVotedpokemon.length === 0 ? (
         <h1 className="text-5xl	text-slate-100	font-extrabold">
           No pokemon vote data!
         </h1>
       ) : (
-        <MostVotedTable pokemon={pokemon} />
+        <div className="flex flex-wrap justify-between space-x-20">
+          <MostVotedTable pokemon={mostVotedpokemon} title="Most voted!" />
+          <MostVotedTable pokemon={leastVotedpokemon} title="Least voted!" />
+        </div>
       )}
       <div className="mt-10 text-center">
         <Link href="/">
@@ -113,9 +130,21 @@ export const getServerSideProps = async () => {
 
     .slice(0, 5);
 
+  const top5Worst = pokemon
+    .filter(p => getPercernt(p) > 0)
+    .sort((a, b) => {
+      return b.votesUp - a.votesUp;
+    })
+    .sort((a, b) => {
+      return getPercernt(a) - getPercernt(b);
+    })
+
+    .slice(0, 5);
+
   return {
     props: {
-      pokemon: top5,
+      mostVotedpokemon: top5,
+      leastVotedpokemon: top5Worst,
     },
   };
 };
