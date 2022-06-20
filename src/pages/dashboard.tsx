@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
-import { prisma } from '../db/client';
+import { prisma } from '../db';
 
+// TODO: Delete this file
 const Dashboard: NextPage<any> = ({ counts }) => {
   return (
     <div>

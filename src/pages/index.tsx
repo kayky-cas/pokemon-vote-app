@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { PokemonView } from '../components/pokemon.components';
 
+// TODO: Add a most voted table page
 const PokeVote: NextPage<any> = () => {
   const [pokemon, setPokemon] = useState<Pokemon[]>([]);
 

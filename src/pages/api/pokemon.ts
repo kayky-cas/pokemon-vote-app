@@ -1,8 +1,9 @@
 import { Pokemon } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { dataToPokemon, fetchPokemon } from '../../helpers/pokemon.helpers';
-import { prisma } from '../../db/client';
+import { prisma } from '../../db';
 
+// TODO: make this better
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const pokemonCount = 150;
 
