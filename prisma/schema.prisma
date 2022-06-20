@@ -13,8 +13,9 @@ datasource db {
 }
 
 model Pokemon {
-  id   Int    @id
-  name String
+  id       Int    @id
+  name     String
+  imageUrl String
 
   votesUp   Int @default(0)
   votesDown Int @default(0)
