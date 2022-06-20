@@ -102,7 +102,7 @@ export const getServerSideProps = async () => {
     );
   };
 
-  const top10 = pokemon
+  const top5 = pokemon
     .filter(p => getPercernt(p) > 0)
     .sort((a, b) => {
       return b.votesUp - a.votesUp;
@@ -111,11 +111,11 @@ export const getServerSideProps = async () => {
       return getPercernt(b) - getPercernt(a);
     })
 
-    .slice(0, 10);
+    .slice(0, 5);
 
   return {
     props: {
-      pokemon: top10,
+      pokemon: top5,
     },
   };
 };
