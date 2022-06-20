@@ -1,14 +1,18 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
+import type { NextPage } from 'next';
+import { prisma } from '../db/client';
 
-
-const Home: NextPage = () => {
+const PokeVote: NextPage<any> = ({ counts }) => {
   return (
     <div>
-      <h1>Hi Vercel!</h1>
+      <h1>We have {counts} pokemons cached on the database!</h1>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default PokeVote;
+
+export const getServerSideProps = async () => {
+  const pokemons = await prisma.pokemon.findMany();
+
+  return { props: { counts: pokemons.length } };
+};
