@@ -82,7 +82,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const pokemon: Pokemon[] = [];
 
   for (let i = 0; i < 2; i++) {
-    const pokeId = Math.floor(Math.random() * pokemonCount) + 1;
+    let pokeId = Math.floor(Math.random() * pokemonCount) + 1;
+
+    while (pokemon.find(p => p.id === pokeId)) {
+      pokeId = Math.floor(Math.random() * pokemonCount) + 1;
+    }
 
     let pokemonOnData = await prisma.pokemon.findUnique({
       where: { id: pokeId },

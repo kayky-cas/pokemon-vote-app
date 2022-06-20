@@ -5,7 +5,10 @@ import { prisma } from '../db';
 const Dashboard: NextPage<any> = ({ counts }) => {
   return (
     <div>
-      <h1>We have {counts} pokemons cached on the database!</h1>
+      <h1 className="text-slate-100">
+        We have <span className="text-sky-100">{counts}</span> pokemons cached
+        on the database!
+      </h1>
     </div>
   );
 };
