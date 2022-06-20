@@ -9,7 +9,7 @@ const PokeVote: NextPage<any> = () => {
 
   const fetchPokemons = () => {
     fetch('/api/pokemon')
-      .then((res) => res.json())
+      .then(res => res.json())
       .then(setPokemon);
   };
 
