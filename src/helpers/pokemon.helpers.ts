@@ -1,4 +1,5 @@
 import { Pokemon } from '@prisma/client';
+import { prisma } from '../db';
 
 export const getPokemonImageUrl = (pokemon: Pokemon) => {
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`;

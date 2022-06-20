@@ -1,12 +1,36 @@
 import { Pokemon } from '@prisma/client';
 import type { NextPage } from 'next';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { PokemonView } from '../components/pokemon.components';
+import { Spinner } from '../components/spinner.components';
+import { RequestPokemonBody } from './api/pokemon';
 
 // TODO: Add a most voted table page
 const PokeVote: NextPage<any> = () => {
   const [pokemon, setPokemon] = useState<Pokemon[]>([]);
+
+  const vote = (winnerPokemon: Pokemon) => {
+    const body = {
+      votedPokemonId: winnerPokemon.id,
+      pokemon,
+    };
+
+    setPokemon([]);
+
+    fetch('/api/pokemon', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    }).then(res => {
+      if (res.status === 200) {
+        fetchPokemons();
+      }
+    });
+  };
 
   const fetchPokemons = () => {
     fetch('/api/pokemon')
@@ -19,16 +43,16 @@ const PokeVote: NextPage<any> = () => {
   }, []);
 
   return (
-    <div className="h-screen w-screen bg-neutral-800">
-      <div className="md:container md:mx-auto h-screen flex w-screen">
-        {pokemon.length != 0 ? (
-          <PokemonView pokemon={pokemon} />
-        ) : (
-          <div
-            className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full"
-            role="status"
-          ></div>
-        )}
+    <div className="m-auto w-6/12 ">
+      {pokemon.length === 0 ? (
+        <Spinner />
+      ) : (
+        <PokemonView onVote={vote} pokemon={pokemon} />
+      )}
+      <div className="mt-10 text-center">
+        <Link href="/votes">
+          <a className="text-fuchsia-400">Most voted table!</a>
+        </Link>
       </div>
     </div>
   );

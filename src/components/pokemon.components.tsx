@@ -5,14 +5,16 @@ import { VoteButton } from './vote-button.component';
 
 type PokeCardProps = {
   pokemon: Pokemon;
-  redButton?: boolean;
+  isRed?: boolean;
+  onVote: (pokemon: Pokemon) => void;
 };
 
 type PokeVirewProps = {
   pokemon: Pokemon[];
+  onVote: (pokemon: Pokemon) => void;
 };
 
-const PokemonCard: React.FC<PokeCardProps> = ({ pokemon, redButton }) => {
+const PokemonCard: React.FC<PokeCardProps> = ({ pokemon, isRed, onVote }) => {
   return (
     <div className="w-full max-w-xs	rounded overflow-hidden shadow-xl shadow-neutral-900 mb-4 text-center pb-10 bg-neutral-900">
       <Image
@@ -31,20 +33,25 @@ const PokemonCard: React.FC<PokeCardProps> = ({ pokemon, redButton }) => {
         </div>
       </div>
 
-      <VoteButton redButton={redButton} />
+      <VoteButton pokemon={pokemon} isRed={isRed} onVote={onVote} />
     </div>
   );
 };
 
-export const PokemonView: React.FC<PokeVirewProps> = ({ pokemon }) => {
+export const PokemonView: React.FC<PokeVirewProps> = ({ pokemon, onVote }) => {
   if (!pokemon) {
     return null;
   }
 
   return (
-    <div className="flex flex-wrap m-auto w-6/12 justify-between">
+    <div className="flex flex-wrap justify-between">
       {pokemon.map((p, i) => (
-        <PokemonCard key={p.id} pokemon={p} redButton={i % 2 != 0} />
+        <PokemonCard
+          key={p.id}
+          pokemon={p}
+          isRed={i % 2 != 0}
+          onVote={onVote}
+        />
       ))}
     </div>
   );
