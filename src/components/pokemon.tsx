@@ -6,6 +6,7 @@ export type PokemonNecessary = {
   imageUrl: string;
 };
 
+// TODO fix buttons colors
 const VoteButton = ({ color }: { color: 'cyan' | 'red' }) => {
   return (
     <button
