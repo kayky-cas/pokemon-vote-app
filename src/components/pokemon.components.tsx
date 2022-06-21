@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Pokemon } from '@prisma/client';
 import Image from 'next/image';
 import { getPokemonImageUrl } from '../helpers/pokemon.helpers';
@@ -6,12 +7,12 @@ import { VoteButton } from './vote-button.component';
 type PokeCardProps = {
   pokemon: Pokemon;
   isRed?: boolean;
-  onVote: (pokemon: Pokemon) => void;
+  onVote: (winnerPokemon: Pokemon) => void;
 };
 
 type PokeVirewProps = {
   pokemon: Pokemon[];
-  onVote: (pokemon: Pokemon) => void;
+  onVote: (winnerPokemon: Pokemon) => void;
 };
 
 const PokemonCard: React.FC<PokeCardProps> = ({ pokemon, isRed, onVote }) => {
@@ -20,7 +21,7 @@ const PokemonCard: React.FC<PokeCardProps> = ({ pokemon, isRed, onVote }) => {
       <Image
         className="w-full"
         src={getPokemonImageUrl(pokemon)}
-        alt="Sunset in the mountains"
+        alt={`${pokemon.name} icon`}
         height={150}
         width={150}
       />

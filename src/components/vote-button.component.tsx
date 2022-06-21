@@ -2,6 +2,7 @@ import { Pokemon } from '@prisma/client';
 
 type VoteButtonProps = {
   pokemon: Pokemon;
+  // eslint-disable-next-line no-unused-vars
   onVote: (pokemon: Pokemon) => void;
   isRed?: boolean;
 };
