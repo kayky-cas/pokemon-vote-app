@@ -77,7 +77,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  const pokemonCount = 150;
+  const pokemonCount = 898;
 
   const pokemon: Pokemon[] = [];
 

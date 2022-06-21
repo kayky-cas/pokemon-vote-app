@@ -26,7 +26,7 @@ const PokemonCard: React.FC<PokeCardProps> = ({ pokemon, isRed, onVote }) => {
         width={150}
       />
       <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2 text-slate-50">
+        <div className="font-bold text-xl mb-2 text-slate-50 capitalize">
           {pokemon.name}
           <span className="text-slate-400	font-normal italic">
             {' #' + pokemon.id}
