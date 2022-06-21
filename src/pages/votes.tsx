@@ -31,7 +31,7 @@ const PokemonTr: React.FC<PokemonTrProps> = ({ pokemon, position }) => {
             alt=""
           />
           <div className="flex flex-col justify-between p-4 leading-normal">
-            <h5 className="mb-2 w-full text-md font-medium tracking-tight text-gray-900 dark:text-white text-left">
+            <h5 className="mb-2 w-full text-md font-medium tracking-tight text-gray-900 dark:text-white text-left capitalize">
               {pokemon.name}
             </h5>
           </div>
