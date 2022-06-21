@@ -1,22 +1,31 @@
 import { Pokemon } from '@prisma/client';
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 
 import { PokemonView } from '../components/pokemon.components';
 import { Spinner } from '../components/spinner.components';
 
-// TODO: Add a most voted table page
+const fetchPokemons = async (): Promise<Pokemon[]> => {
+  const response = await fetch('/api/pokemon');
+  return await response.json();
+};
+
 const PokeVote: NextPage<any> = () => {
-  const [pokemon, setPokemon] = useState<Pokemon[]>([]);
+  const {
+    data: pokemon,
+    isLoading,
+    refetch,
+    isRefetching,
+  } = useQuery('pokemon', fetchPokemons, { refetchOnWindowFocus: false });
 
   const vote = (winnerPokemon: Pokemon) => {
+    refetch();
+
     const body = {
       votedPokemonId: winnerPokemon.id,
       pokemon,
     };
-
-    setPokemon([]);
 
     fetch('/api/pokemon', {
       method: 'POST',
@@ -26,24 +35,13 @@ const PokeVote: NextPage<any> = () => {
       body: JSON.stringify(body),
     }).then(res => {
       if (res.status === 200) {
-        fetchPokemons();
       }
     });
   };
 
-  const fetchPokemons = () => {
-    fetch('/api/pokemon')
-      .then(res => res.json())
-      .then(setPokemon);
-  };
-
-  useEffect(() => {
-    fetchPokemons();
-  }, []);
-
   return (
     <div className="m-auto w-6/12 ">
-      {pokemon.length === 0 ? (
+      {isLoading || !pokemon || isRefetching ? (
         <Spinner />
       ) : (
         <PokemonView onVote={vote} pokemon={pokemon} />
