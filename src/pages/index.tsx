@@ -17,7 +17,11 @@ const PokeVote: NextPage<any> = () => {
     isLoading,
     refetch,
     isRefetching,
-  } = useQuery('pokemon', fetchPokemons, { refetchOnWindowFocus: false });
+  } = useQuery('pokemon', fetchPokemons, {
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+    refetchOnReconnect: false,
+  });
 
   const vote = (winnerPokemon: Pokemon) => {
     refetch();
