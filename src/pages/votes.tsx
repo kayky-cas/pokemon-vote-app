@@ -138,7 +138,10 @@ export const getServerSideProps = async () => {
   const voteCount =
     pokemon.reduce((acc, a) => acc + a.votesDown + a.votesUp, 0) / 2;
 
+  const VOTES_TO_COUNT = 10;
+
   const top5 = pokemon
+    .filter(p => p.votesDown + p.votesUp > VOTES_TO_COUNT)
     .filter(p => getPercernt(p) > 0)
     .sort((a, b) => {
       return b.votesUp - a.votesUp;
