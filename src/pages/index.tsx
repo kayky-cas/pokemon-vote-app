@@ -6,11 +6,6 @@ import { PokemonView } from '../components/pokemon.components';
 import { Spinner } from '../components/spinner.components';
 import { trpc } from '../utils/trpc';
 
-const fetchPokemons = async (): Promise<Pokemon[]> => {
-  const response = await fetch('/api/pokemon');
-  return await response.json();
-};
-
 const PokeVote: NextPage<any> = () => {
   const {
     data: pokemon,

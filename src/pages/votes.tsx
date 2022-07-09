@@ -2,11 +2,10 @@ import { Pokemon } from '@prisma/client';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import React from 'react';
-import { getPokemonImageUrl } from '../helpers/pokemon.helpers';
-import { prisma } from '../db';
 import Link from 'next/link';
 import { trpc } from '../utils/trpc';
 import { Spinner } from '../components/spinner.components';
+import { getPokemonImageUrl } from '../utils/pokemon/getImageUrl';
 
 type PokemonTrProps = {
   pokemon: Pokemon;

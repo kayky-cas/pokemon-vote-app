@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Pokemon } from '@prisma/client';
 import Image from 'next/image';
-import { getPokemonImageUrl } from '../helpers/pokemon.helpers';
+import { getPokemonImageUrl } from '../utils/pokemon/getImageUrl';
 import { VoteButton } from './vote-button.component';
 
 type PokeCardProps = {
