@@ -45,7 +45,6 @@ const PokeVote: NextPage<any> = () => {
         <PokemonView onVote={vote} pokemon={pokemon} />
       )}
       <div className="mt-10 text-center">
-        <h1>{process.env.VERCEL_URL}?</h1>
         <Link href="/votes">
           <a className="text-fuchsia-400">Most voted table</a>
         </Link>

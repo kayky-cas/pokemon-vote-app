@@ -34,9 +34,6 @@ export default withTRPC<AppRouter>({
 
     return {
       url,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
       /**
        * @link https://react-query.tanstack.com/reference/QueryClient
        */
