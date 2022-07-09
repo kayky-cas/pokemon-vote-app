@@ -1,46 +1,40 @@
 import { Pokemon } from '@prisma/client';
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import { useQuery } from 'react-query';
 
 import { PokemonView } from '../components/pokemon.components';
 import { Spinner } from '../components/spinner.components';
-
-const fetchPokemons = async (): Promise<Pokemon[]> => {
-  const response = await fetch('/api/pokemon');
-  return await response.json();
-};
+import { trpc } from '../utils/trpc';
 
 const PokeVote: NextPage<any> = () => {
   const {
     data: pokemon,
     isLoading,
-    refetch,
     isRefetching,
-  } = useQuery('pokemon', fetchPokemons, {
+    refetch,
+  } = trpc.useQuery(['pokemon-duel'], {
     refetchOnWindowFocus: false,
-    refetchInterval: false,
     refetchOnReconnect: false,
   });
 
+  const mutation = trpc.useMutation(['pokemon-vote']);
+
   const vote = (winnerPokemon: Pokemon) => {
-    refetch();
+    if (!pokemon) {
+      return;
+    }
+    const looserPokemon = pokemon.filter(p => p.id !== winnerPokemon.id)[0];
 
-    const body = {
-      votedPokemonId: winnerPokemon.id,
-      pokemon,
-    };
+    if (!looserPokemon) {
+      return;
+    }
 
-    fetch('/api/pokemon', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    }).then(res => {
-      if (res.status === 200) {
-      }
+    mutation.mutate({
+      winner: winnerPokemon,
+      loser: looserPokemon,
     });
+
+    refetch();
   };
 
   return (
