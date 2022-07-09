@@ -5,6 +5,8 @@ import React from 'react';
 import { getPokemonImageUrl } from '../helpers/pokemon.helpers';
 import { prisma } from '../db';
 import Link from 'next/link';
+import { trpc } from '../utils/trpc';
+import { Spinner } from '../components/spinner.components';
 
 type PokemonTrProps = {
   pokemon: Pokemon;
@@ -80,28 +82,30 @@ type VotesPageProps = {
   voteCount: number;
 };
 
-const VotesPage: NextPage<VotesPageProps> = ({
-  mostVotedpokemon,
-  leastVotedpokemon,
-  voteCount,
-}) => {
+const VotesPage: NextPage<VotesPageProps> = () => {
+  const { data } = trpc.useQuery([
+    'pokemon-list',
+    {
+      limit: 5,
+    },
+  ]);
+
   return (
     <div className="m-auto">
-      {mostVotedpokemon.length === 0 || leastVotedpokemon.length === 0 ? (
-        <h1 className="text-5xl	text-slate-100	font-extrabold">
-          No pokemon vote data!
-        </h1>
+      {!data ? (
+        <Spinner></Spinner>
       ) : (
         <div>
           <h1 className="w-full text-3xl text-center mb-5 text-slate-100 italic	font-extrabold antialiased">
-            {voteCount} votes
+            {data.voteCount} votes
           </h1>
           <div className="flex flex-wrap justify-between space-x-20">
-            <MostVotedTable pokemon={mostVotedpokemon} title="Most voted!" />
-            <MostVotedTable pokemon={leastVotedpokemon} title="Least voted!" />
+            <MostVotedTable pokemon={data.mostVoted} title="Most voted!" />
+            <MostVotedTable pokemon={data.leastVoted} title="Least voted!" />
           </div>
         </div>
       )}
+
       <div className="mt-10 text-center">
         <Link href="/">
           <a className="text-fuchsia-400">Back to vote</a>
@@ -121,53 +125,3 @@ const VotesPage: NextPage<VotesPageProps> = ({
 };
 
 export default VotesPage;
-
-export const getServerSideProps = async () => {
-  const pokemon = await prisma.pokemon.findMany();
-
-  const getPercernt = (pokemon: Pokemon) => {
-    if (pokemon.votesDown + pokemon.votesUp == 0) {
-      return 0;
-    }
-
-    return Math.round(
-      (pokemon.votesUp / (pokemon.votesDown + pokemon.votesUp)) * 100
-    );
-  };
-
-  const voteCount =
-    pokemon.reduce((acc, a) => acc + a.votesDown + a.votesUp, 0) / 2;
-
-  const VOTES_TO_COUNT = 10;
-
-  const top5 = pokemon
-    .filter(p => p.votesDown + p.votesUp > VOTES_TO_COUNT)
-    .filter(p => getPercernt(p) > 0)
-    .sort((a, b) => {
-      return b.votesUp - a.votesUp;
-    })
-    .sort((a, b) => {
-      return getPercernt(b) - getPercernt(a);
-    })
-
-    .slice(0, 5);
-
-  const top5Worst = pokemon
-    .filter(p => getPercernt(p) > 0)
-    .sort((a, b) => {
-      return b.votesUp - a.votesUp;
-    })
-    .sort((a, b) => {
-      return getPercernt(a) - getPercernt(b);
-    })
-
-    .slice(0, 5);
-
-  return {
-    props: {
-      mostVotedpokemon: top5,
-      leastVotedpokemon: top5Worst,
-      voteCount,
-    },
-  };
-};

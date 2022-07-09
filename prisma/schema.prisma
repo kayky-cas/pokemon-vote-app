@@ -6,6 +6,11 @@ generator client {
   previewFeatures = ["referentialIntegrity"]
 }
 
+generator zod {
+  provider = "zod-prisma"
+  output   = "../src/db/zod-schemas"
+}
+
 datasource db {
   provider             = "mysql"
   url                  = env("DATABASE_URL")
