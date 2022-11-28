@@ -96,7 +96,7 @@ const VotesPage: NextPage<VotesPageProps> = () => {
       ) : (
         <div>
           <h1 className="w-full text-3xl text-center mb-5 text-slate-100 italic	font-extrabold antialiased">
-            {data.voteCount} votes
+            {Math.floor(data.voteCount)} votes
           </h1>
           <div className="flex flex-wrap justify-between space-x-20">
             <MostVotedTable pokemon={data.mostVoted} title="Most voted!" />
